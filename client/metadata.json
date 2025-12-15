@@ -1,0 +1,5 @@
+{
+  "name": "Company Intranet MVP",
+  "description": "A foundational intranet structure for managing companies, users, and spaces with role-based access control.",
+  "requestFramePermissions": []
+}

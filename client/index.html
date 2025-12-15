@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Intranet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "react": "https://esm.sh/react@18.2.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?external=react,react-dom",
+    "@remix-run/router": "https://esm.sh/@remix-run/router@1.15.3",
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react",
+    "recharts": "https://esm.sh/recharts@2.12.3?external=react,react-dom",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+  }
+}
+</script>
+<style>
+  /* THEME DEFINITIONS */
+  
+  /* Light Theme (Default / Fallback) - RED/BLACK/WHITE */
+  :root {
+    --bg-app: #FFFFFF;
+    --bg-card: #F9FAFB;
+    --bg-sidebar: #F3F4F6;
+    --text-main: #000000;
+    --text-muted: #4B5563;
+    --border-color: #E5E7EB;
+    
+    /* Default Accent Color: RED */
+    --accent-color: #dc2626; 
+    
+    /* Font Variables (Default Stack) */
+    --font-heading: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* ACCENT COLOR OVERRIDES - CLASS HIJACKING 
+     Forcing standard Tailwind blue classes to use our dynamic Red accent color.
+  */
+  
+  /* Backgrounds */
+  .bg-blue-600 { background-color: var(--accent-color) !important; }
+  .hover\:bg-blue-700:hover { 
+    background-color: color-mix(in srgb, var(--accent-color), black 10%) !important; 
+    filter: brightness(0.9); 
+  }
+  
+  /* Tints */
+  .bg-blue-50 { background-color: color-mix(in srgb, var(--accent-color), white 95%) !important; }
+  .bg-blue-100 { background-color: color-mix(in srgb, var(--accent-color), white 90%) !important; }
+  .hover\:bg-blue-100:hover { background-color: color-mix(in srgb, var(--accent-color), white 85%) !important; }
+
+  /* Text Colors */
+  .text-blue-600 { color: var(--accent-color) !important; }
+  .text-blue-500 { color: var(--accent-color) !important; } 
+  .text-blue-700 { color: color-mix(in srgb, var(--accent-color), black 20%) !important; }
+  
+  .hover\:text-blue-600:hover { color: var(--accent-color) !important; opacity: 0.8; }
+  .hover\:text-blue-800:hover { color: color-mix(in srgb, var(--accent-color), black 30%) !important; }
+
+  /* Borders & Rings */
+  .border-blue-600 { border-color: var(--accent-color) !important; }
+  .border-blue-500 { border-color: var(--accent-color) !important; }
+  .border-blue-200 { border-color: color-mix(in srgb, var(--accent-color), white 80%) !important; }
+  .border-blue-100 { border-color: color-mix(in srgb, var(--accent-color), white 90%) !important; }
+  
+  .focus\:ring-blue-500:focus { --tw-ring-color: var(--accent-color) !important; }
+
+
+  /* Dark Theme Overrides - TRUE BLACK */
+  .theme-dark {
+    --bg-app: #000000;
+    --bg-card: #121212;
+    --bg-sidebar: #0a0a0a;
+    --text-main: #FFFFFF;
+    --text-muted: #A1A1AA;
+    --border-color: #27272A;
+  }
+
+  .theme-dark body {
+    background-color: var(--bg-app) !important;
+    color: var(--text-main) !important;
+  }
+
+  .theme-dark .bg-slate-50 {
+    background-color: var(--bg-sidebar) !important;
+    border-color: var(--border-color) !important;
+  }
+
+  .theme-dark .bg-white {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-main) !important;
+  }
+
+  .theme-dark .text-slate-900, 
+  .theme-dark .text-slate-800, 
+  .theme-dark .text-gray-900 {
+    color: var(--text-main) !important;
+  }
+
+  .theme-dark .text-slate-500, 
+  .theme-dark .text-slate-600, 
+  .theme-dark .text-slate-700,
+  .theme-dark .text-gray-500 {
+    color: var(--text-muted) !important;
+  }
+
+  .theme-dark .border-slate-100,
+  .theme-dark .border-slate-200,
+  .theme-dark .border-slate-300,
+  .theme-dark .border-gray-200 {
+    border-color: var(--border-color) !important;
+  }
+
+  /* Form Elements in Dark Mode */
+  .theme-dark input, 
+  .theme-dark select, 
+  .theme-dark textarea {
+    background-color: #181818 !important;
+    border-color: #333 !important;
+    color: #FFF !important;
+  }
+
+  .theme-dark .hover\:bg-slate-50:hover {
+    background-color: #1a1a1a !important;
+  }
+  
+  /* Typography Application */
+  body {
+    font-family: var(--font-body) !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: var(--font-heading) !important;
+  }
+
+</style>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-white text-slate-900 antialiased transition-colors duration-200">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
